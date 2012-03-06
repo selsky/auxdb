@@ -2,11 +2,15 @@ from personnel.models import Person
 from django.contrib import admin
 from django import forms
 from django.core.exceptions import ValidationError
-
+from django.contrib.localflavor.us.forms import USSocialSecurityNumberField 
 
 class MyPersonAdminForm(forms.ModelForm):
     class Meta:
         model = Person
+#        widgets = {
+#            'ssn': USSocialSecurityNumberField(),
+#        }
+
     def clean (self):
         cleaned_data = self.cleaned_data
         idno   = cleaned_data.get("idno")
@@ -16,7 +20,7 @@ class MyPersonAdminForm(forms.ModelForm):
             if rank == 'APO' or rank == 'A/Sgt':
                 raise ValidationError('APOs and A/Sgts must have shield numbers')
         else:
-            if rank != 'APO' or rank != 'A/Sgt':
+            if not (rank == 'APO' or rank == 'A/Sgt'):
                 raise ValidationError('Only APOs and A/Sgts may have shield numbers')
         if idno < 0 and rank != 'APP':
             raise ValidationError('Only applicants may have negative id numbers')
