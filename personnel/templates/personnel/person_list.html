@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>People</h2>
+    <ul>
+        {% for person in object_list %}
+            <li><a href="/person/{{person.idno}}">{{ person.rank }} {{ person.first_name}} {{ person.last_name}}</li></a>
+        {% endfor %}
+    </ul>
+{% endblock %}

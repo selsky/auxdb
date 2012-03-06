@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ person.rank }} {{ person.first_name}} {{person.last_name}}
+{% endblock title %}
+
+{% block content %}
+{{ person.rank }} {{ person.first_name}} {{person.last_name}}<br>
+id: {{person.idno}}<br>
+APS1: <a href="{{person.idno}}/aps1.pdf">view</a>
+{% endblock content %}
