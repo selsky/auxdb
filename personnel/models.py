@@ -68,7 +68,7 @@ class Person(models.Model):
     apt          = CharField(max_length = 8)
     city         = CharField(max_length = 40)
     state        = USStateField()
-    zipcode      = USPostalCodeField()
+    zipcode      = CharField(max_length = 10)
     verfied      = CharField(max_length = 40)
     phone        = PhoneNumberField()
     birthplace   = CharField(max_length = 80)
