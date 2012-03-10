@@ -43,6 +43,12 @@ def aps1_pdf(request, pk):
     p.drawString(54,729,person.last_name)
     p.drawString(210,729,person.first_name)
 
+    p.drawString( 75,700,person.address)
+    p.drawString(252,700,person.apt)
+    p.drawString( 36,680,person.city)
+    p.drawString(180,680,person.state)
+    p.drawString(240,680,person.zipcode)
+
     side_draw(p,582,612,person.last_name)
     side_draw(p,582,477,person.first_name)
     side_draw(p,582,324,str(person.idno))
