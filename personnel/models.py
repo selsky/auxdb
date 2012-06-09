@@ -25,15 +25,17 @@ MARITAL_CHOICES = (('M', 'Married'),
                    ('D', 'Divorced'),
                    ('W', 'Widowed'))
 
-HAIR_CHOICES = (('Bk', 'Black'), 
+HAIR_CHOICES = (('Blk', 'Black'), 
                 ('Brn', 'Brown'),
                 ('Yel', 'Yellow'),
                 ('Gry', 'Grey'))
 
-EYE_CHOICES = (('Blu', 'Blue'), 
-               ('Brn', 'Brown'),
+EYE_CHOICES = (('Gy', 'Grey'),
+               ('Blu', 'Blue'), 
+               ('Hzl', 'Hazel'), 
+               ('Br', 'Brown'),
                ('Yel', 'Yellow'),
-               ('Grn', 'Green'))
+               ('Gn', 'Green'))
 
 def fake_idno():
     try:
@@ -69,7 +71,7 @@ class Person(models.Model):
     city         = CharField(max_length = 40)
     state        = USStateField()
     zipcode      = CharField(max_length = 10)
-    verfied      = CharField(max_length = 40)
+    verified     = CharField(max_length = 40)
     phone        = PhoneNumberField()
     birthplace   = CharField(max_length = 80)
     birth_cert   = CharField(max_length = 40)
