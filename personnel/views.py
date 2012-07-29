@@ -12,15 +12,32 @@ def side_draw(p,x,y,s):
     p.drawString(0,0,s)
     p.restoreState()
 
+def calc_width(p,s,fontsize):
+    words = s.split(' ')
+    spaces = len(words) - 1
+    width = 0.25*fontsize*spaces
+    for word in words:
+        width += p.stringWidth(word, fontName=font, fontSize=fontsize)
+    return width
+
+def print_string(p, x0, y, s, fontsize):
+    x = x0 
+    p.setFont(font, fontsize)
+    words = s.split(' ')
+
+    for word in words:
+        p.drawString(x, y, word)
+        x += p.stringWidth(word, fontName=font, fontSize=fontsize) + 0.25*fontsize
+    
+
 def fill_field(p, x, y, maxx, s):
     fontsize = 12
     max_width = maxx - x
-    w = p.stringWidth(s, fontName=font, fontSize=fontsize)
+    w = calc_width(p, s, fontsize)
     while w > max_width:
         fontsize -= 1
-        w = p.stringWidth(s,font, fontsize)
-    p.setFont(font, fontsize)
-    p.drawString(x,y,s)
+        w = calc_width(p, s, fontsize)
+    print_string(p, x, y, s, fontsize)
 
 
 def aps1_pdf(request, pk):
@@ -80,8 +97,42 @@ def aps1_pdf(request, pk):
     else:
         fill_field(p,486,665,560,"No")
         
+    fill_field(p,390,648,560,person.marks)
+    fill_field(p,390,630,560,person.defects)
+    fill_field(p,370,610,560,person.ssn)
+    fill_field(p,350,592,560,person.drivers)
+    fill_field(p,350,572,468,person.pistol)
+    fill_field(p,500,572,560,person.pistol_type)
+    fill_field(p,350,552,414,person.draft_status)
+    fill_field(p,480,552,560,person.discharge)
+    fill_field(p,370,535,560,person.branch)
 
+    if person.applied:
+        fill_field(p,465,505,560,"Yes")
+    else:
+        fill_field(p,465,505,560,"No")
 
+    if person.summonsed:
+        fill_field(p,490,486,560,"Yes")
+    else:
+        fill_field(p,490,486,560,"No")
+
+    fill_field(p,170,435,252,person.max_grade)
+    fill_field(p,290,435,414,person.school)
+    fill_field(p,460,435,560,person.location)
+
+    fill_field(p, 36,420,212,person.emploer)
+    fill_field(p,220,420,372,person.emp_address)
+    fill_field(p,380,420,456,person.occupation)
+    fill_field(p,464,420,522,person.emp_phone)
+    fill_field(p,530,420,560,person.emp_length)
+
+    fill_field(p,200,394,360,person.next_kin)
+    fill_field(p,414,394,560,person.kin_relate)
+    
+    fill_field(p, 81,376,360,person.kin_addr)
+    fill_field(p,414,376,560,person.kin_phone)
+    
     side_draw(p,582,612,person.last_name)
     side_draw(p,582,477,person.first_name)
     side_draw(p,582,324,str(person.idno))
