@@ -1,8 +1,12 @@
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from reportlab.pdfgen import canvas
-from auxdb.personnel.models import Person
-
+from auxdb.personnel.models import Person,Tour
+from django.shortcuts import render, render_to_response
+import datetime
+from django.forms.models import modelformset_factory
+from django.template import RequestContext
 font = 'Times-Roman'
 
 def side_draw(p,x,y,s):
@@ -77,11 +81,11 @@ def aps1_pdf(request, pk):
     fill_field(p,115,472,280,str(person.warrant_date))
     fill_field(p,115,452,280,str(person.dmv_date))
     if person.gender == "M":
-        fill_field(p,324,735,342,"X")
+        fill_field(p,324,730,342,"X")
     if person.gender == "F":
-        fill_field(p,360,735,378,"X")
+        fill_field(p,360,730,378,"X")
     
-    fill_field(p,440,735,560,person.marital)
+    fill_field(p,440,730,560,person.get_marital_display())
     fill_field(p,332,712,360,person.height)
     fill_field(p,380,712,410,str(person.weight))
     fill_field(p,450,712,480,person.hair_color)
@@ -121,7 +125,7 @@ def aps1_pdf(request, pk):
     fill_field(p,290,435,414,person.school)
     fill_field(p,460,435,560,person.location)
 
-    fill_field(p, 36,420,212,person.emploer)
+    fill_field(p, 36,420,212,person.employer)
     fill_field(p,220,420,372,person.emp_address)
     fill_field(p,380,420,456,person.occupation)
     fill_field(p,464,420,522,person.emp_phone)
@@ -143,4 +147,45 @@ def aps1_pdf(request, pk):
     p.save()
     return response
 
+
+def fy_label (d):
+    y = d.year
+    if d.month <= 6:
+        return "{0}-{1}".format(y-1,y)
+    else:
+        return "{0}-{1}".format(y,y+1)
+
+def fy_range (d): 
+    y = d.year
+    if d.month <= 6:
+        return (datetime.date(y-1,7,1),datetime.date(y,6,30))
+    else:
+        return (datetime.date(y,7,1),datetime.date(y+1,6,30))
+
+def aps11_html(request, pk):
+    person = Person.objects.get(pk=pk)
+    q = Tour.objects.filter(person__exact=person)
+    q = q.filter(date__range=(datetime.date(2012,7,1),datetime.date(2013,6,30)))
+    return render(request, 'personnel/aps11.html', 
+                  {"person": person, 
+                   "tours": q})
+
+def aps10_html(request, year, month, day):
+    date = datetime.date(int(year),int(month),int(day))
+
+    TourFormSet = modelformset_factory(Tour, can_delete=True)
+    if request.method == 'POST':
+        formset = TourFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            formset.save()
+            return HttpResponseRedirect(reverse('aps10_html', 
+                                                kwargs={"year": year,
+                                                        "month": month,
+                                                        "day": day}))
+    else:
+        formset = TourFormSet(queryset=Tour.objects.filter(date__exact=date))
+    return render_to_response("personnel/aps10.html", 
+                              {"date": date,
+                               "formset": formset },
+                              context_instance=RequestContext(request))
 

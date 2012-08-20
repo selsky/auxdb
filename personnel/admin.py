@@ -1,4 +1,4 @@
-from personnel.models import Person
+from personnel.models import Person,Tour
 from django.contrib import admin
 from django import forms
 from django.core.exceptions import ValidationError
@@ -30,4 +30,5 @@ class PersonAdmin(admin.ModelAdmin):
     list_display = ['rank', 'last_name', 'first_name']
     form = MyPersonAdminForm
 
+admin.site.register(Tour)
 admin.site.register(Person, PersonAdmin)
