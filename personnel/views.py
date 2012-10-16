@@ -121,7 +121,7 @@ def aps1_pdf(request, pk):
     fill_field(p,290,435,414,person.school)
     fill_field(p,460,435,560,person.location)
 
-    fill_field(p, 36,420,212,person.emploer)
+    fill_field(p, 36,420,212,person.employer)
     fill_field(p,220,420,372,person.emp_address)
     fill_field(p,380,420,456,person.occupation)
     fill_field(p,464,420,522,person.emp_phone)
