@@ -105,7 +105,7 @@ class Person(models.Model):
     max_grade    = CharField(max_length = 40)
     school       = CharField(max_length = 40)
     location     = CharField(max_length = 40)
-    emploer      = CharField(max_length = 80)
+    employer     = CharField(max_length = 80)
     emp_address  = CharField(max_length = 80)
     occupation   = CharField(max_length = 80)
     emp_phone    = PhoneNumberField()
