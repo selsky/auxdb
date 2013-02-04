@@ -162,13 +162,41 @@ def fy_range (d):
     else:
         return (datetime.date(y,7,1),datetime.date(y+1,6,30))
 
-def aps11_html(request, pk):
+def aps11_html(request, pk, fy):
+    year = int(fy)
     person = Person.objects.get(pk=pk)
+    date_min = datetime.date(year - 1,7,1)
+    date_max = datetime.date(year,6,30)
+
+    ord_min = date_min.toordinal()
+    ord_max = date_max.toordinal()
+
     q = Tour.objects.filter(person__exact=person)
-    q = q.filter(date__range=(datetime.date(2012,7,1),datetime.date(2013,6,30)))
+    q = q.filter(date__range=(date_min,date_max))
+
+
+    l = [ ['X' for d in range(0,32)] for m in range(0,12)]
+    mnames = ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 
+              'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+    for mon in range(0,12):
+        l[mon][0] = mnames[mon]
+
+    for ordday in range(ord_min, ord_max + 1):
+        thedate = datetime.date.fromordinal(ordday)
+        m = (thedate.month + 5) % 12
+        d = thedate.day 
+        l[m][d] = ''
+        daytours = q.filter(date__exact=thedate)
+        dayhours = 0
+        for tour in daytours:
+            dayhours += tour.tour_length()
+        if dayhours > 0:
+            l[m][d]  = str(dayhours)
+
     return render(request, 'personnel/aps11.html', 
                   {"person": person, 
-                   "tours": q})
+                   "cal": l,
+                   "daylabels": ['Mon'] + range(1,32)})
 
 def aps10_html(request, year, month, day):
     date = datetime.date(int(year),int(month),int(day))
