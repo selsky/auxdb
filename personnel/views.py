@@ -217,3 +217,29 @@ def aps10_html(request, year, month, day):
                                "formset": formset },
                               context_instance=RequestContext(request))
 
+def aps36_html (request, y, m):
+    year= int(y)
+    month = int(m)
+    day = datetime.timedelta(1)
+    date_min = datetime.date(year,month,1)
+    
+    date_max = datetime.date(year + (month/12), 1 + (month % 12),1) - day
+
+    tours = Tour.objects.filter(date__range=(date_min,date_max))
+    # FIXME actually, just people in the unit during the month
+    people = Person.objects.all()
+    
+    
+    data = []
+    for person in people:
+        qp = tours.filter(person=person) 
+        hours = 0
+        for tour in qp:
+            hours += tour.tour_length()
+        data += [[person, hours]]
+    return render(request, 'personnel/aps36.html', 
+                  {"data": data,
+                   "date": date_min.strftime("%B %Y")})
+
+        
+    
