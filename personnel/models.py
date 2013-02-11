@@ -67,6 +67,7 @@ class Person(models.Model):
 
     last_name    = CharField(max_length = 40)
     first_name   = CharField(max_length = 40)
+    middle_name  = CharField(max_length = 40)
     rank         = CharField(max_length = 7, choices = RANK_CHOICES)
     idno         = SmallIntegerField(unique = True, 
                                      primary_key = True, 
