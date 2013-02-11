@@ -35,12 +35,12 @@ HAIR_CHOICES = (('Blk', 'Black'),
                 ('Yel', 'Yellow'),
                 ('Gry', 'Grey'))
 
-EYE_CHOICES = (('Gy', 'Grey'),
+EYE_CHOICES = (('Gry', 'Grey'),
                ('Blu', 'Blue'), 
                ('Hzl', 'Hazel'), 
-               ('Br', 'Brown'),
+               ('Brn', 'Brown'),
                ('Yel', 'Yellow'),
-               ('Gn', 'Green'))
+               ('Grn', 'Green'))
 
 def fake_idno():
     try:
