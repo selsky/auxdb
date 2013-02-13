@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ person.rank }} {{ person.first_name}} {{person.last_name}}
+{% endblock title %}
+
+{% block content %}
+{{ person.rank }} {{ person.first_name}} {{person.last_name}}<br>
+id: {{person.idno}}<br>
+
+<table>
+<tr>
+{% for day in daylabels %}
+<th> {{day}} </th>
+{% endfor %}
+</tr>
+
+{% for month in cal %}
+<tr> 
+{% for day in month %}
+<td> {{day}} </td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+
+{% endblock content %}

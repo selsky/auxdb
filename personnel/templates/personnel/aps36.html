@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}
+APS 36 for {{date}}
+{% endblock title %}
+
+{% block content %}
+<h1>APS 36 for {{date}}</h1>
+
+<table>
+<tr>
+{% for person, hours in data %}
+<tr> 
+  <td>{{person.last_name}}, {{person.first_name}}</td>
+  <td>{{person.idno}}</td>
+  <td>{{hours}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock content %}
