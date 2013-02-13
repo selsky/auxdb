@@ -138,7 +138,8 @@ def aps1_pdf(request, pk):
     fill_field(p,414,376,560,person.kin_phone)
     
     side_draw(p,582,612,person.last_name)
-    side_draw(p,582,477,person.first_name)
+    side_draw(p,582,518,person.first_name)
+    side_draw(p,582,400,person.middle_name)
     side_draw(p,582,324,str(person.idno))
     side_draw(p,582,171,'024')
 
