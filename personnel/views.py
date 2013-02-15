@@ -55,7 +55,6 @@ def aps1_pdf(request, pk):
 
     p.drawImage('APS1-Front.tif', 0, 54, 72*8.5, 72*11)
 
-    
     p.setFont(font, 12)
 
     # Draw things on the PDF. Here's where the PDF generation happens.
@@ -73,7 +72,9 @@ def aps1_pdf(request, pk):
     fill_field(p, 75,648,280,person.verified)
     fill_field(p, 80,632,280,person.phone)
     fill_field(p, 90,615,205,person.birthplace)
+    fill_field(p,235,615,280,str(person.birth_date))
     fill_field(p,100,596,280,person.birth_cert)
+    fill_field(p,112,578,280,"N/A")
     fill_field(p,150,550,280,person.entry_port)
     fill_field(p,112,530,280,person.naturalize)
     fill_field(p,112,510,280,person.green_card)
@@ -136,6 +137,9 @@ def aps1_pdf(request, pk):
     
     fill_field(p, 81,376,360,person.kin_addr)
     fill_field(p,414,376,560,person.kin_phone)
+
+    # FIXME: hack.  But a handy one right now.
+    fill_field(p,110,90,280,"13MN01")
     
     side_draw(p,582,612,person.last_name)
     side_draw(p,582,518,person.first_name)
